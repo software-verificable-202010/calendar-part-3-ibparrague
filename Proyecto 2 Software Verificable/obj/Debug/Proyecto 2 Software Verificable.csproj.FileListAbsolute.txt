@@ -141,3 +141,6 @@ C:\Mis cosas\_uandes\2020-01\Diseño de Software Verificable\Proyecto parte 3\ca
 C:\Mis cosas\_uandes\2020-01\Diseño de Software Verificable\Proyecto parte 3\calendar-part-3-ibparrague\Proyecto 2 Software Verificable\obj\Debug\Proyecto 2 Software Verificable.csproj.CopyComplete
 C:\Mis cosas\_uandes\2020-01\Diseño de Software Verificable\Proyecto parte 3\calendar-part-3-ibparrague\Proyecto 2 Software Verificable\obj\Debug\Proyecto 2 Software Verificable.exe
 C:\Mis cosas\_uandes\2020-01\Diseño de Software Verificable\Proyecto parte 3\calendar-part-3-ibparrague\Proyecto 2 Software Verificable\obj\Debug\Proyecto 2 Software Verificable.pdb
+C:\Mis cosas\_uandes\2020-01\Diseño de Software Verificable\Proyecto parte 3\calendar-part-3-ibparrague\Proyecto 2 Software Verificable\bin\Debug\nunit.framework.dll
+C:\Mis cosas\_uandes\2020-01\Diseño de Software Verificable\Proyecto parte 3\calendar-part-3-ibparrague\Proyecto 2 Software Verificable\bin\Debug\nunit.framework.pdb
+C:\Mis cosas\_uandes\2020-01\Diseño de Software Verificable\Proyecto parte 3\calendar-part-3-ibparrague\Proyecto 2 Software Verificable\bin\Debug\nunit.framework.xml
