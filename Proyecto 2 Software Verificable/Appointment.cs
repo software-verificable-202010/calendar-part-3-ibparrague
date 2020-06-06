@@ -11,7 +11,7 @@ namespace Proyecto_2_Software_Verificable
     [Serializable]
     public class Appointment
     {
-
+        #region Fields
         private string title;
         private string description;
         private DateTime date;
@@ -19,6 +19,9 @@ namespace Proyecto_2_Software_Verificable
         private DateTime endTime;
         private User creator;
         private List<User> invitedUsers;
+        #endregion
+
+        #region Properties
         public string Title
         {
             get
@@ -86,6 +89,9 @@ namespace Proyecto_2_Software_Verificable
                 creator = value;
             }
         }
+        #endregion
+
+        #region Constructors
         public Appointment() 
         {
             this.invitedUsers = new List<User>();
@@ -101,7 +107,9 @@ namespace Proyecto_2_Software_Verificable
             this.creator = creator;
             this.invitedUsers = invitedUsers;
         }
+        #endregion
 
+        #region Methods
         public DateTime GetRealStartTime()
         {
             return date.Date.AddHours(startTime.Hour).AddMinutes(startTime.Minute).AddSeconds(startTime.Second);
@@ -140,5 +148,6 @@ namespace Proyecto_2_Software_Verificable
             }
             return false;
         }
+        #endregion
     }
 }

@@ -9,16 +9,11 @@ namespace Proyecto_2_Software_Verificable
     [Serializable]
     public class User
     {
+        #region Fields
         private string name;
+        #endregion
 
-        public User()
-        {
-        }
-        public User(string name)
-        {
-            this.name = name;
-        }
-
+        #region Properties
         public string Name
         {
             get
@@ -30,5 +25,16 @@ namespace Proyecto_2_Software_Verificable
                 name = value;
             }
         }
+        #endregion
+
+        #region Constructors
+        public User()
+        {
+        }
+        public User(string name)
+        {
+            this.name = name;
+        }
+        #endregion
     }
 }
