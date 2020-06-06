@@ -75,12 +75,21 @@ namespace Proyecto_2_Software_Verificable
             }
         }
 
-        public User GetCreator()
+        public User Creator
         {
-            return creator;
+            get
+            {
+                return creator;
+            }
+            set
+            {
+                creator = value;
+            }
         }
         public Appointment() 
         {
+            this.invitedUsers = new List<User>();
+            this.creator = new User();
         }
         public Appointment(string title, string description, DateTime date, DateTime startTime, DateTime endTime, User creator, List<User> invitedUsers)
         {
@@ -122,8 +131,7 @@ namespace Proyecto_2_Software_Verificable
         {
             if (user != null)
             {
-                int possibleIndexOfUser = invitedUsers.IndexOf(user);
-                bool isUserInInvitationsList = !(possibleIndexOfUser == -1);
+                bool isUserInInvitationsList = invitedUsers.Any(u => u.Name == user.Name);
                 bool isUserTheCreator = (this.creator.Name == user.Name);
                 if (isUserInInvitationsList || isUserTheCreator)
                 {

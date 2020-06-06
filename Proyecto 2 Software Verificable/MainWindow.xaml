@@ -194,6 +194,8 @@
             <Button x:Name="btnCancelNewAppointment" Grid.Column="0" Grid.Row="6" Content="Cancel" FontSize="25" Click="BtnCancelNewAppointment_Click"></Button>
             <Label Name="lblErrorsNewAppointment" Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="3" FontSize="20"></Label>
             <Button x:Name="btnSaveNewAppointment" Grid.Column="5" Grid.Row="6" Content="Save" FontSize="25" Click="BtnSaveAppointment_Click"></Button>
+            <Label x:Name="lblAppointmentInvitation" Grid.Column="3" Grid.Row="3" Content="Invited Users" FontSize="40" HorizontalAlignment="Right" VerticalAlignment="Center"></Label>
+            <ListBox x:Name="listboxAppointmentInvitations" Grid.Column="3" Grid.Row="4" Grid.RowSpan="2" SelectionMode="Multiple"></ListBox>
         </Grid>
         <Grid x:Name="gridAppointmentListing" Visibility="Hidden">
             <Grid.RowDefinitions>
@@ -214,10 +216,7 @@
                 <StackPanel x:Name="stackPanelAppointment" Grid.ColumnSpan="5" VerticalAlignment="Top" HorizontalAlignment="Left" Orientation="Vertical">
                 </StackPanel>
             </ScrollViewer>
-            <Button x:Name="btnCancelEditAppointment" Grid.Column="0" Grid.Row="2" Content="Cancel" FontSize="25" Click="BtnCancelNewAppointment_Click"></Button>
-        </Grid>
-        <Grid x:Name="gridAppointmentEditing" Visibility="Visible">
-
+            <Button x:Name="btnCancelEditAppointment" Grid.Column="0" Grid.Row="2" Content="Back" FontSize="25" Click="BtnCancelNewAppointment_Click"></Button>
         </Grid>
     </Grid>
 </Window>

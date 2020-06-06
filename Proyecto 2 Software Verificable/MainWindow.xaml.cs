@@ -211,7 +211,6 @@ namespace Proyecto_2_Software_Verificable
             gridMonthlyView.Visibility = Visibility.Visible;
             gridWeeklyView.Visibility = Visibility.Hidden;
             gridAppointmentCreation.Visibility = Visibility.Hidden;
-            gridAppointmentEditing.Visibility = Visibility.Hidden;
             gridAppointmentListing.Visibility = Visibility.Hidden;
             isArrowInputAvailable = true;
         }
@@ -221,7 +220,6 @@ namespace Proyecto_2_Software_Verificable
             gridMonthlyView.Visibility = Visibility.Hidden;
             gridWeeklyView.Visibility = Visibility.Hidden;
             gridAppointmentCreation.Visibility = Visibility.Visible;
-            gridAppointmentEditing.Visibility = Visibility.Hidden;
             gridAppointmentListing.Visibility = Visibility.Hidden;
             isArrowInputAvailable = false;
         }
@@ -231,7 +229,6 @@ namespace Proyecto_2_Software_Verificable
             gridMonthlyView.Visibility = Visibility.Hidden;
             gridWeeklyView.Visibility = Visibility.Visible;
             gridAppointmentCreation.Visibility = Visibility.Hidden;
-            gridAppointmentEditing.Visibility = Visibility.Hidden;
             gridAppointmentListing.Visibility = Visibility.Hidden;
             isArrowInputAvailable = false;
         }
@@ -241,7 +238,6 @@ namespace Proyecto_2_Software_Verificable
             gridMonthlyView.Visibility = Visibility.Hidden;
             gridWeeklyView.Visibility = Visibility.Hidden;
             gridAppointmentCreation.Visibility = Visibility.Hidden;
-            gridAppointmentEditing.Visibility = Visibility.Hidden;
             gridAppointmentListing.Visibility = Visibility.Visible;
             isArrowInputAvailable = false;
         }
@@ -331,6 +327,7 @@ namespace Proyecto_2_Software_Verificable
                         stringBuilder.Append("\n");
                         stringBuilder.Append(appointment.Title);
                     }
+                    stringBuilder.Append("\n");
                     appointmentLabel.Content = stringBuilder;
                 }
                 Grid.SetColumn(appointmentLabel, xCoordinateToInsertNumber);
@@ -612,7 +609,12 @@ namespace Proyecto_2_Software_Verificable
             DateTime newAppointmentDate = datePickerNewAppointment.SelectedDate.Value.Date;
             DateTime newAppointmentStartTime = timePickerStartTimeNewAppointment.Value.Value;
             DateTime newAppointmentEndTime = timePickerEndTimeNewAppointment.Value.Value;
-            List<User> invitedUsers = new List<User>(); //TODO GET INVITADOS
+            List<User> invitedUsers = new List<User>();
+            foreach (string userName in listboxAppointmentInvitations.SelectedItems)
+            {
+                User invitedUser = users.Find(u => u.Name == userName);
+                invitedUsers.Add(invitedUser);
+            }
             bool isAppointmentNew = (targetAppoitnemnt.Title == null);
             if (isAppointmentNew)
             {
@@ -676,7 +678,7 @@ namespace Proyecto_2_Software_Verificable
         private void UpdateAppointmentsList()
         {
             stackPanelAppointment.Children.Clear();
-            List<Appointment> currentUserAppointments = appointments.FindAll(a => a.GetCreator().Name == currentUser.Name);
+            List<Appointment> currentUserAppointments = appointments.FindAll(a => a.Creator.Name == currentUser.Name);
             foreach(Appointment app in currentUserAppointments)
             {
                 AddAppointmentToStackPanel(app);
@@ -688,7 +690,7 @@ namespace Proyecto_2_Software_Verificable
             gridAppointment.Height = 40;
             AddColumnsToAppointmentGrid(gridAppointment);
             AddLabelsToAppointmentGrid(appointment, gridAppointment);
-            AddEditButtonToAppointmentGrid(appointment, gridAppointment);
+            AddButtonsToAppointmentGrid(appointment, gridAppointment);
             stackPanelAppointment.Children.Add(gridAppointment);
         }
         static private void AddColumnsToAppointmentGrid(Grid gridAppointment)
@@ -701,10 +703,13 @@ namespace Proyecto_2_Software_Verificable
             column3.Width = new GridLength(3, GridUnitType.Star);
             ColumnDefinition column4 = new ColumnDefinition();
             column4.Width = new GridLength(1, GridUnitType.Star);
+            ColumnDefinition column5 = new ColumnDefinition();
+            column4.Width = new GridLength(1, GridUnitType.Star);
             gridAppointment.ColumnDefinitions.Add(column1);
             gridAppointment.ColumnDefinitions.Add(column2);
             gridAppointment.ColumnDefinitions.Add(column3);
             gridAppointment.ColumnDefinitions.Add(column4);
+            gridAppointment.ColumnDefinitions.Add(column5);
         }
         static private void AddLabelsToAppointmentGrid(Appointment appointment, Grid gridAppointment)
         {
@@ -732,16 +737,22 @@ namespace Proyecto_2_Software_Verificable
             gridAppointment.Children.Add(labelDescription);
             gridAppointment.Children.Add(labelDate);
         }
-        private void AddEditButtonToAppointmentGrid(Appointment appointment, Grid gridAppointment)
+        private void AddButtonsToAppointmentGrid(Appointment appointment, Grid gridAppointment)
         {
             Button editButton = new Button();
             editButton.Content = "Edit";
-            
             editButton.Click += (sender, EventArgs) => { EditButton_Click(appointment, this); };
-
             editButton.Width = 128;
             Grid.SetColumn(editButton, 3);
+
+            Button deleteButton = new Button();
+            deleteButton.Content = "Delete";
+            deleteButton.Click += (sender, EventArgs) => { DeleteButton_Click(appointment, this); };
+            deleteButton.Width = 128;
+            Grid.SetColumn(deleteButton, 4);
+
             gridAppointment.Children.Add(editButton);
+            gridAppointment.Children.Add(deleteButton);
         }
         private static void EditButton_Click(Appointment appointment, MainWindow mainWindow)
         {
@@ -749,11 +760,18 @@ namespace Proyecto_2_Software_Verificable
             mainWindow.DisplayEditAppointmentMenu();
             mainWindow.UpdateEditAppointmentMenu();
         }
+        private static void DeleteButton_Click(Appointment appointment, MainWindow mainWindow)
+        {
+            Appointment appointmentToDelete = mainWindow.targetAppoitnemnt;
+            int indexToDelete = mainWindow.appointments.FindIndex(a => a == appointment);
+            mainWindow.appointments.RemoveAt(indexToDelete);
+            mainWindow.UpdateAppointmentsList();
+            SerializeAppointments(mainWindow.appointments);
+        }
         private void UpdateEditAppointmentMenu()
         {
             txtTitleNewAppointment.Text = targetAppoitnemnt.Title;
             txtDecriptionNewAppointment.Text = targetAppoitnemnt.Description;
-            
             if (targetAppoitnemnt.Date == DateTime.MinValue)
             {
                 datePickerNewAppointment.SelectedDate = DateTime.Now;
@@ -762,9 +780,24 @@ namespace Proyecto_2_Software_Verificable
             {
                 datePickerNewAppointment.SelectedDate = targetAppoitnemnt.Date;
             }
-            
             timePickerStartTimeNewAppointment.Value = targetAppoitnemnt.StartTime;
             timePickerEndTimeNewAppointment.Value = targetAppoitnemnt.EndTime;
+            listboxAppointmentInvitations.Items.Clear();
+            int currentIndex = 0;
+            foreach (User user in users)
+            {
+                bool isUserCreatingAppointment = user == currentUser;
+                bool isUserInvited = targetAppoitnemnt.IsUserInvited(user);
+                if (!isUserCreatingAppointment)
+                {
+                    listboxAppointmentInvitations.Items.Add(user.Name);
+                    if (isUserInvited)
+                    {
+                        listboxAppointmentInvitations.SelectedItems.Add(user.Name);
+                    }
+                    currentIndex++;
+                } 
+            }    
         }
         private void BtnGoBackToMonth_Click(object sender, RoutedEventArgs e)
         {
@@ -789,6 +822,7 @@ namespace Proyecto_2_Software_Verificable
         {
             if (gridToReturnFromAppointment == GridsToReturnFromAppointment.MonthlyView)
             {
+                UpdateCalendarGrid(activeMonthDate);
                 DisplayMonthMenu();
             }
             else if (gridToReturnFromAppointment == GridsToReturnFromAppointment.WeeklyView)
