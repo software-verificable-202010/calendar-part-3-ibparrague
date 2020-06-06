@@ -1,0 +1,1 @@
+Los usuarios se crean al ingresar un nombre, es decir, si ingresamos un nombre de un usuario, y este no existe, este se crea, si existe, entonces uno ingresa como ese usuario.
